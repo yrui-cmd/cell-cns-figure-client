@@ -171,7 +171,7 @@ class ClientTests(unittest.TestCase):
         with c.Lock(self.job/'waiter.lock'):
             self.assertEqual(c.start_waiter(self.job),{'already_running':True})
         with patch.object(c,'start_waiter') as start:
-            c.recover(self.root/'registry');start.assert_called_once_with(str(self.job))
+            c.recover(self.root/'registry');start.assert_called_once_with(str(self.job.resolve()))
     def test_waiter_persists_heartbeat_and_handles_stop(self):
         self.prepare()
         with patch.object(c,'poll_once',side_effect=lambda directory:c.update(directory,state='stopped')),patch.object(c.time,'sleep'):
